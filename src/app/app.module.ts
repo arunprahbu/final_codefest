@@ -9,6 +9,7 @@ import { ButtonModule } from '@momentum-ui/angular';
 import { RoomComponent } from './room/room.component';
 import { CallComponent } from './call/call.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { TeamsComponent } from './teams/teams.component';
 
 
 const appRoutes: Routes = [
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
   {path: 'logged', component: LoggedComponent,canActivate: [AuthGuardService]},
   {path: 'room', component: RoomComponent,canActivate: [AuthGuardService]},
   {path: 'call',component: CallComponent,canActivate: [AuthGuardService]},
+  {path: 'teams',component: TeamsComponent,canActivate: [AuthGuardService]}
 
 ]
 @NgModule({
@@ -25,7 +27,8 @@ const appRoutes: Routes = [
     WebexComponent,
     LoggedComponent,
     RoomComponent,
-    CallComponent
+    CallComponent,
+    TeamsComponent
   ],
   imports: [
     BrowserModule,

@@ -30,9 +30,9 @@
     <li class="md-tab__item">
       <button md-button color="blue"  type='button' (click)="ondisplay_list()" class ="btn btn-primary">List room</button>
     </li>
-    <!-- <li class="md-tab__item">
-      <a role="tab" href="room" aria-current="true">Third Tab</a>
-    </li> -->
+    <li class="md-tab__item">
+      <button md-button color="blue"  type='button'  (click)="ondisplay_remove()"class ="btn btn-primary">Remove Room</button>
+    </li>
   </ul>
 </div>
 
@@ -40,7 +40,14 @@
   <input mdinput="" class="md-width" placeholder="Enter the Room name" class="md-input" [(ngModel)]="roomName">
   <br>
   <button md-button color="blue" (click)="onCreateRoom()">Create Room</button>
+  <br>
+  <input mdinput="" class="md-width" placeholder="Enter room to message" class="md-input" [(ngModel)]="messageRoom">
+  <input mdinput="" class="md-width" placeholder="Enter Message" class="md-input" [(ngModel)]="messages">
+  <button md-button color="green" (click)="onSendMsg()">Send Message</button>
+  <button md-button color="green" (click)="onReceiveMsg()">Receive Message</button>
+  {{ receivedmsg }}
 </div>
+
 <div *ngIf="display_list">
 <button type="button" md-button color="green" (click)="listRooms()" >List Rooms</button>
 <button type="button" md-button color="purple" (click)="clearlist()">clear List</button>
@@ -51,6 +58,7 @@
           <th style="width: 8rem">Room Name</th>
             <th style="width: 10rem">Room type</th>
             <th style="width: 6rem">Last Updated</th>
+            <th style="width: 6rem">ID</th>
         </tr>
     </thead>
     <tbody>
@@ -58,10 +66,17 @@
         <td>{{ obj.title }}</td>
         <td>{{ obj.type }}</td>
         <td>{{ obj.lastActivity }}</td>
+        <td>{{ obj.id }}</td>
       </tr>
     </tbody>
   </table>
 </div>
+</div>
+
+<div *ngIf="display_remove">
+  <input mdinput="" class="md-width" placeholder="Enter the Room name to be removed" class="md-input" [(ngModel)]="removeroomName">
+  <br>
+  <button md-button color="red" (click)="onRemoveRoom()">Remove Room</button>
 </div>
 
 <div *ngIf="!hideSuccessMessage" class="md-alert md-alert--success">

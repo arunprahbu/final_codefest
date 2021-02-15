@@ -48,9 +48,15 @@ export class LoggedComponent implements OnInit {
     const response = this.web.meetings.get('me');
     debugger;
   }
-  alert(){
-    alert("in alert")
+  call(){
+    this.router.navigate(['/call'])
+  }
+  room(){
     this.router.navigate(['/room'])
   }
+  team(){
+    this.router.navigate(['/teams'])
+  }
+  
   
 }

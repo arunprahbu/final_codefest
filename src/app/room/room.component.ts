@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SelectRowDirective } from '@momentum-ui/angular/data-table/data-table-select-row.directive';
 import { WebexComponent } from '../webex/webex.component'
+declare const loop: any;
 
 @Component({
   selector: 'app-room',
@@ -8,14 +10,20 @@ import { WebexComponent } from '../webex/webex.component'
 })
 export class RoomComponent implements OnInit {
   roomName: string;
+  removeroomName: string;
   rooms: string;
+  roomid: string;
   isShowRoom :boolean;
   hideSuccessMessage : boolean;
   display_list: boolean;
   display_create_room: boolean;
+  display_remove: boolean;
   auth_gaurd: boolean;
+  messages: any;
+  messageRoom: any;
+  receivedmsg: any;
   constructor(private webexComponent: WebexComponent) {this.isShowRoom=false,
-    this.hideSuccessMessage=true, this.display_list=false, this.display_create_room=true, this.auth_gaurd = true}
+    this.hideSuccessMessage=true, this.display_list=false, this.display_create_room=true, this.display_remove=false,this.auth_gaurd = true}
 
   ngOnInit(): void {
     this.webexComponent.onInit()
@@ -36,11 +44,18 @@ export class RoomComponent implements OnInit {
   ondisplay_list(){ 
     this.display_list=true
     this.display_create_room=false
+    this.display_remove=false
   }
   ondisplay_create_room(){
     this.display_create_room=true
     this.display_list=false
+    this.display_remove=false
   }
+  ondisplay_remove(){
+    this.display_create_room=false
+    this.display_list=false
+    this.display_remove=true
+   }
   onLogout() {
     this.webexComponent.onLogout(event)
   }
@@ -54,4 +69,58 @@ export class RoomComponent implements OnInit {
  clearlist(){
   this.isShowRoom=false
  }
+ 
+ onRemoveRoom(){
+    this.webexComponent.onListRoom().then((rooms) => {
+      this.rooms = rooms;
+      // console.log(rooms)
+      // loop(this.rooms)
+      for (var i = 0; i < rooms.items.length; i+= 1) {
+        var found = false;
+        if (rooms.items[i].title === this.removeroomName){
+          alert(rooms.items[i].title)
+          this.webexComponent.onremove(rooms.items[i].id)
+          found = true;
+          break;
+        }
+      }
+      if(!found){
+        alert(this.removeroomName + "does not exist")
+      }
+
+    })
 }
+onSendMsg(){
+
+  this.webexComponent.onListRoom().then((rooms) => {
+    this.rooms = rooms;
+    // console.log(rooms)
+    // loop(this.rooms)
+    for (var i = 0; i < rooms.items.length; i+= 1) {
+      var found = false;
+      if (rooms.items[i].title === this.messageRoom){
+        alert(rooms.items[i].id)
+        this.webexComponent.onSendMsg(rooms.items[i].id, this.messages)
+        found = true;
+        break;
+      }
+    }
+    if(!found){
+      alert(this.removeroomName + "does not exist")
+    }
+
+  })
+}
+async onReceiveMsg(){
+
+  this.receivedmsg=this.webexComponent.onRecvMsg()
+  alert(this.webexComponent.messages)
+  // this.receivedmsg="Arun"
+  // alert(this.receivedmsg.items.text)
+}
+message(msg){
+  this.receivedmsg=msg
+}
+
+ }
+

@@ -24,8 +24,10 @@ export class CallComponent implements OnInit {
   meet: any;
   media: any;
   incoming_meeting: any;
+  added_incoming: any;
   sendVideo: boolean;
   sendAudio: boolean;
+  incoming_call: any;
 
   constructor(private webexComponent: WebexComponent) { 
     
@@ -75,20 +77,25 @@ export class CallComponent implements OnInit {
       if (addedMeetingEvent.type === 'INCOMING') {
         const addedMeeting = addedMeetingEvent.meeting;
         this.incoming_meeting=  addedMeetingEvent
-        // Acknowledge to the server that we received the call on our device
         addedMeeting.acknowledge(addedMeetingEvent.type)
           .then(() => {
-            if (confirm('Answer incoming call')) {
-              
-              this.bindMeetingEvents(addedMeeting);
-              return this.joinMeeting(addedMeeting);
-            }
-            else {
-              addedMeeting.decline();
-            }
+ 
+            this.added_incoming= addedMeeting
+            this.incoming_call = true;
           });
       }
     });
+  }
+  async incoming_attend(){
+    if (this.incoming_call = true){
+              this.incoming_call = false
+              this.bindMeetingEvents(this.added_incoming);
+              return this.joinMeeting(this.added_incoming);}
+              else{this.added_incoming.decline()}
+  }
+  incoming(){
+    this.incoming_call = true;
+    return true
   }
   token(){
     // alert(this.Token)
@@ -98,21 +105,14 @@ export class CallComponent implements OnInit {
   }
   onDial(){
     localStorage.setItem('invite',this.invitee)
-    // if (this.registered === false){
-    // this.onRegister()}
+
     return this.webex.meetings.create(localStorage.getItem('invite')).then((meeting) => {
-      // Call our helper function for binding events to meetings
       this.meet=meeting
-      // this.meet.join()
-      // alert(this.meet)
       this.bindMeetingEvents(this.meet);
       return this.joinMeeting(this.meet)
-      // alert("after bind")
-      // // meeting.join()
-      // alert("after meeting join")
+
     })
     .catch((error) => {
-      // Report the error
       console.error(error);
     });
   }
@@ -121,13 +121,17 @@ export class CallComponent implements OnInit {
 
   }
   onhangup(){
-    this.meet.leave()
-    try{
-      if(this.incoming_meeting != "undefined")
-      this.incoming_meeting.leave()
-    }catch (error) {
+    if(this.meet != "undefined"){
+    this.meet.leave()}
+    else{this.added_incoming.leave()}
+    
+    // try{
+    //   if(this.incoming_meeting != "undefined")
+    //   this.incoming_meeting.leave()
+    //   this.added_incoming.leave()
+    // }catch (error) {
       
-    }
+    // }
 }
 
   async bindMeetingEvents(meeting) {
@@ -145,7 +149,6 @@ export class CallComponent implements OnInit {
       //     //  alert(media)
       //      this.media=media
       if (!media) {
-        alert("no no")
         return;
       }
       // const _video = this.video.nativeElement
@@ -241,13 +244,20 @@ audiocheckbox(e){
   if(e.target.checked){
     this.sendAudio=true
   }else{this.sendAudio=false}
-  alert(this.sendAudio)
+
 }
 videocheckbox(e){
   if(e.target.checked){
     this.sendVideo=true
   }else{this.sendVideo=false}
-  alert(this.sendVideo)
 }  
+
+async incoming_cancel(){
+  this.incoming_call=false
+  this.added_incoming.decline()
+}
+onLogout() {
+  this.webexComponent.onLogout(event)
+}
   
 }

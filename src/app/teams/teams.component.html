@@ -1,0 +1,93 @@
+<header class="md-top-bar md-top-bar--blue" role="navigation">
+    <div class="md-top-bar__container">
+      <div class="md-top-bar__brand">
+        <a class="md-brand" href="/">
+          <div class="md-brand__logo md-brand__logo--pad">
+            <!-- Note: use either image or icon, but not both -->
+            <!-- img src="/assets/spark-logo.svg" alt="Momentum UI" -->
+            <i class="icon icon-cisco-logo"></i>
+          </div>
+          <div class="md-brand__title">Webex Teams</div>
+        </a>
+      </div>
+      <div class="md-top-bar__right ">
+        <!-- Note: conditionally show top-bar__user or top-bar__logged-out -->
+        <a role="tab" href="teams" aria-current="true">Refresh</a>
+         <div class="md-top-bar__user">
+          <button md-button color="red" id="LogoutBtn" type='button' (click)="onLogout()" class ="btn btn-primary">Logout</button>
+         </div>
+         
+      </div>
+    </div>
+  </header>
+  
+  
+  <div class="md-tab md-tab--pills md-tab--justified" type="pills">
+    <ul class="md-tab__list" role="tab">
+      <li class="md-tab__item active">
+        <button md-button color="blue"  type='button' (click)="ondisplay_create_team()" class ="btn btn-primary">create Teams</button>
+      </li>
+      <li class="md-tab__item">
+        <button md-button color="blue"  type='button' (click)="ondisplay_list()" class ="btn btn-primary">List Teams</button>
+      </li>
+      <li class="md-tab__item">
+        <button md-button color="blue"  type='button'  (click)="ondisplay_remove()"class ="btn btn-primary">Update Team</button>
+      </li>
+    </ul>
+  </div>
+  
+  <div *ngIf="display_create_team">
+    <input mdinput="" class="md-width" placeholder="Enter the team name" class="md-input" [(ngModel)]="teamName">
+    <br>
+    <button md-button color="blue" (click)="onCreateTeam()">Create Team</button>
+  </div>
+  
+  <div *ngIf="display_list">
+  <button type="button" md-button color="green" (click)="listTeams()" >List Teams</button>
+  <button type="button" md-button color="purple" (click)="clearlist()">clear List</button>
+  <div *ngIf = "isShowRoom" class="container">
+    <table class="table table-striped">
+      <thead>
+          <tr>
+            <th style="width: 8rem">Team Name</th>
+              <th style="width: 10rem">Team type</th>
+              <!-- <th style="width: 6rem">Last Updated</th> -->
+              <th style="width: 6rem">ID</th>
+          </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let obj of teams">
+          <td>{{ obj.name }}</td>
+          <td>{{ obj.type }}</td>
+          <!-- <td>{{ obj.lastActivity }}</td> -->
+          <td>{{ obj.id }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+  
+  <div *ngIf="display_remove">
+    <input mdinput="" class="md-width" placeholder="Enter the team name " class="md-input" [(ngModel)]="updateTeamName">
+    <br>
+    <input mdinput="" class="md-width" placeholder="Enter the userid to be added to the team" class="md-input" [(ngModel)]="addUserId">
+    <button md-button color="green" (click)="onUpdateTeamMemeber()">Add Team Member</button>
+    <button md-button color="red" (click)="onRemoveTeamMemeber()">Remove Team Member</button>
+  </div>
+  
+  <div *ngIf="!hideSuccessMessage" class="md-alert md-alert--success">
+    <div class="md-alert__icon"></div>
+    <div class="md-alert__content">
+      <div class="md-alert__title">Team created</div>
+      <strong [ngClass] ="FadeOutSuccessMsg()" >Your Team has been created 
+        successfully. Have a look at it in Teams
+      </strong>
+    </div>
+    <div class="md-alert__button">
+      <button type="button" class="md-button md-button--circle md-button--large">
+        <span class="md-button__children icon icon-cancel_14"></span>
+      </button>
+    </div>
+  </div>
+  
+  

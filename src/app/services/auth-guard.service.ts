@@ -14,7 +14,7 @@ export class AuthGuardService implements CanActivate{
 
     // return !!this.WebexComponent.token
     
-    if (this.WebexComponent.isLoggedIn){
+    if (this.WebexComponent.isLoggedIn ){
       return true;
     }
     return this.router.createUrlTree(['']); 

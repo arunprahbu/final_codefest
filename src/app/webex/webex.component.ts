@@ -18,20 +18,23 @@ export class WebexComponent implements OnInit {
   redirect_uri: any;
   showMsg: boolean = false;
   currentRoom: any;
+  currentTeam: any;
   test: any;
+  roomid: any;
   public loggedin: boolean;
+  messages: any;
 
   constructor() {
     this.syncStatus = 'NONE';
     this.token = '';
     this.destination = '';
-    this.loggedin = false;
   }
   
   ngOnInit() {
     this.redirect_uri='http://localhost:4200/logged'
   }
   Login() {
+    
     this.webex = Webex.init({
       config: {
         meetings: {
@@ -45,7 +48,9 @@ export class WebexComponent implements OnInit {
       }
     })
     // this.loggedin
+    localStorage.setItem('auth', "Authorized")
     this.listenForWebex()
+    this.loggedin = true
     this.webex.authorization.initiateLogin()
     // this.token = localStorage.getItem('webex_token')
     //     alert(this.token)
@@ -61,13 +66,13 @@ export class WebexComponent implements OnInit {
         console.log('Cannot logout when no user is authenticated')
       }
       localStorage.removeItem('webex_token')
+      localStorage.removeItem('auth')
     }
   }
 
   async onCreateRoom(name: string) {
     try {
       this.currentRoom = await this.webex.rooms.create({ title: name })
-      
     } catch(error) {
       window.alert(error);
     }
@@ -77,56 +82,10 @@ export class WebexComponent implements OnInit {
     // this.test=this.webex.rooms.list({max: 3})
     // alert(this.test)
 
-    return this.webex.rooms.list({max:20})
+    return this.webex.rooms.list({max:30})
   }
 
-  onAuth(event){
-    this.redirect_uri = ZipcodeHelp();
-    this.webex = Webex.init({
-      config: {
-        credentials: {
-          client_id: 'C7f815fdf652689ca6222d207d597ac55dc1a82449bdacf8294ba317106f56232',
-          redirect_uri: 'http://localhost:4200/logged',
-          scope: 'spark:all spark:kms'
-        }
-      }
-    });
-    this.webex.once('ready', () => {
-      if(event.target.id === "AuthBtn"){
-        if(!this.webex.canAuthorize){
-          event.preventDefault();
-          this.webex.authorization.initiateLogin();
-          this.showMsg= true;
-
-        }
-        else{alert("User Already Authenticated")}}
-      if(event.target.id === "LogoutBtn"){
-      alert(this.webex)
-          if(this.webex.canAuthorize){
-          event.preventDefault();
-          this.webex.logout();
-          }
-          else{
-            alert("No user has Authenticated")
-          }
-          localStorage.removeItem('webex_token')
-        }
-
-      
-        if (this.webex.canAuthorize) {
-          // Authorization is successful
-          this.showMsg= true;
-          // your app logic goes here
-      
-          // Change Authentication status to `Authenticated`
-          // const authStatus = document.getElementById('authentication-status');
-      
-          // authStatus.innerHTML = 'Authenticated';
-          // authStatus.style = 'color: green';
-          
-        }
-      });
-  }
+  
   onInit() {
     this.webex = Webex.init({
         config: {
@@ -141,8 +100,9 @@ export class WebexComponent implements OnInit {
     this.listenForWebex()
   }
   async listenForWebex() {
+    localStorage.setItem('auth', "Authorized")
+    this.loggedin = true
     this.webex.once(`ready`, () => {
-      this.loggedin = true
       console.log("READY", this.webex.credentials.supertoken)
       if (this.webex.credentials.supertoken){
         localStorage.setItem('webex_token', this.webex.credentials.supertoken.access_token)
@@ -151,7 +111,20 @@ export class WebexComponent implements OnInit {
     });
     
   }
+  async onCreateTeam(name: string) {
+    try {
+      this.currentTeam = await this.webex.teams.create({ name: name })
+    } catch(error) {
+      window.alert(error);
+    }
+  }
   
+  async onListTeam() {
+    // this.test=this.webex.rooms.list({max: 3})
+    // alert(this.test)
+
+    return this.webex.teams.list()
+  }
   onSubmit() {
     this.webex = Webex.init({
       config: {
@@ -214,13 +187,51 @@ export class WebexComponent implements OnInit {
     }
     return 'No Meeting';
   }
-  logout(){
-    this.token=''
-    localStorage.removeItem('isLoggedIn');
-  }
+ 
   get isLoggedIn(): boolean {
-    const webex_token = localStorage.getItem('webex_token');
-    // return (webex_token !== null) ? true : false;
+    const auth = localStorage.getItem('auth');
+    if(auth !== null){
     return true
+    }
+  }
+  ngOnDestroy() {
+    localStorage.removeItem('auth')
+  }
+  onremove(id){
+    this.webex.rooms.remove(id)
+  }
+  onUpdateTeamMember(email, teamid){
+    this.webex.teamMemberships.create({
+      personEmail: email,
+      teamId: teamid
+    
+    });
+  }
+  onRemoveTeamMember(teams){
+    alert("in remove")
+    this.webex.teamMemberships.remove(teams);
+  }
+  onSendMsg(id, msg){
+    alert(id+msg)
+    
+    this.webex.messages.create({
+      text: msg,
+      roomId: id
+    });
+  }
+  async onRecvMsg(){
+    console.log("In reve")
+    this.webex.messages.listen().then(() => {
+      alert('listening to message events')
+      this.webex.messages.on('created', (event) => this.msg(event));
+      this.webex.messages.on('deleted', (event) => console.log(`Got a message:deleted event:\n${event}`));
+      // return("Arun")
+    })
+    .catch((e) => console.error(`Unable to register for message events: ${e}`));
+  }
+  msg(ev){
+    this.messages=ev.data.text
+    alert(this.messages)
+    
   }
 }
