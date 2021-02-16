@@ -70,12 +70,9 @@ export class TeamsComponent implements OnInit {
  onUpdateTeamMemeber(){
     this.webexComponent.onListTeam().then((teams) => {
       this.teams = teams;
-      // console.log(rooms)
-      // loop(this.rooms)
       for (var i = 0; i < teams.items.length; i+= 1) {
         var found = false;
         if (teams.items[i].name === this.updateTeamName){
-          alert(teams.items[i].name)
           this.webexComponent.onUpdateTeamMember(this.addUserId, teams.items[i].id)
           found = true;
           break;
@@ -90,12 +87,9 @@ export class TeamsComponent implements OnInit {
 onRemoveTeamMemeber(){
   this.webexComponent.onListTeam().then((teams) => {
     this.teams = teams;
-    // console.log(rooms)
-    // loop(this.rooms)
     for (var i = 0; i < teams.items.length; i+= 1) {
       var found = false;
       if (teams.items[i].name === this.updateTeamName){
-        alert(teams.items[i].name)
         this.webexComponent.onRemoveTeamMember(teams.items[i].id)
         found = true;
         break;
@@ -107,7 +101,4 @@ onRemoveTeamMemeber(){
 
   })
 }
-
- }
-
-
+}

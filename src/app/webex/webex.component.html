@@ -1,16 +1,31 @@
 
-    <form ngNoForm> 
+    <form ngNoForm>
       <div class="imgcontainer"> 
         <img src="assets/images/cisco.png" alt="Avatar" class="avatar"> 
       </div>
       <button md-button color=00588a style="margin:auto;display:block" id="AuthBtn" type='button' (click)="Login()" class ="btn btn-primary">Authenticate</button>
     </form> 
+
+    <div *ngIf="incoming_message" class="md-alert md-alert--success">
+      <div class="md-alert__icon"></div>
+      <div class="md-alert__content">
+        <strong [ngClass] ="FadeOutSuccessMsg()" >Your command processed
+        </strong>
+    </div>
+
+      <div class="md-alert__button">
+        <button type="button" class="md-button md-button--circle md-button--large">
+          <span class="md-button__children icon icon-cancel_14"></span>
+        </button>
+      </div>
+    </div>
+
     <div class="row"  *ngIf="showMsg">
         <div class="col-xs-12">
           <p class="alert alert-success">
               <strong>Authentication Started</strong>
           </p>
         </div>
-      </div>
+    </div>
     <script crossorigin src="https://unpkg.com/webex@^1/umd/webex.min.js"></script>
-
+   

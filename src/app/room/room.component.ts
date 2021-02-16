@@ -22,8 +22,10 @@ export class RoomComponent implements OnInit {
   messages: any;
   messageRoom: any;
   receivedmsg: any;
+  incoming_message: boolean;
+  hideRemoveMessage: boolean;
   constructor(private webexComponent: WebexComponent) {this.isShowRoom=false,
-    this.hideSuccessMessage=true, this.display_list=false, this.display_create_room=true, this.display_remove=false,this.auth_gaurd = true}
+    this.hideSuccessMessage=true,this.hideRemoveMessage=true, this.display_list=false, this.display_create_room=true, this.display_remove=false,this.auth_gaurd = true,this.receivedmsg="No Messages Received"}
 
   ngOnInit(): void {
     this.webexComponent.onInit()
@@ -63,6 +65,7 @@ export class RoomComponent implements OnInit {
   FadeOutSuccessMsg() {
     setTimeout( () => {
         this.hideSuccessMessage = true;
+        this.hideRemoveMessage=true;
      }, 4000);
  }
 
@@ -73,14 +76,15 @@ export class RoomComponent implements OnInit {
  onRemoveRoom(){
     this.webexComponent.onListRoom().then((rooms) => {
       this.rooms = rooms;
-      // console.log(rooms)
-      // loop(this.rooms)
       for (var i = 0; i < rooms.items.length; i+= 1) {
         var found = false;
         if (rooms.items[i].title === this.removeroomName){
-          alert(rooms.items[i].title)
           this.webexComponent.onremove(rooms.items[i].id)
           found = true;
+          if (found === true){
+            this.hideRemoveMessage=false
+
+          }
           break;
         }
       }
@@ -94,12 +98,9 @@ onSendMsg(){
 
   this.webexComponent.onListRoom().then((rooms) => {
     this.rooms = rooms;
-    // console.log(rooms)
-    // loop(this.rooms)
     for (var i = 0; i < rooms.items.length; i+= 1) {
       var found = false;
       if (rooms.items[i].title === this.messageRoom){
-        alert(rooms.items[i].id)
         this.webexComponent.onSendMsg(rooms.items[i].id, this.messages)
         found = true;
         break;
@@ -113,14 +114,10 @@ onSendMsg(){
 }
 async onReceiveMsg(){
 
-  this.receivedmsg=this.webexComponent.onRecvMsg()
-  alert(this.webexComponent.messages)
-  // this.receivedmsg="Arun"
-  // alert(this.receivedmsg.items.text)
+  this.webexComponent.onRecvMsg()
 }
-message(msg){
-  this.receivedmsg=msg
+async message(){
+  this.receivedmsg=this.webexComponent.ret()
+
 }
-
- }
-
+}

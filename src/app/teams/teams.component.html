@@ -1,17 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CALL ANYONE ON WEBEX</title>
+    <link rel="stylesheet" href="https://downloads.momentum-ui.com/@momentum-ui/core/css/momentum-ui.css">
+    <style>
+      main {
+        padding: 10px;
+      }
+      table {
+        border-collapse: collapse;
+        padding: 10px;
+        margin: 10px;
+      }
+      table, th, td {
+        border: 1px solid black;
+      }
+      thead th {
+        font-weight: bold;
+      }
+      tbody td {
+        min-width: 150px;
+      }
+    </style>
+  </head>
 <header class="md-top-bar md-top-bar--blue" role="navigation">
     <div class="md-top-bar__container">
       <div class="md-top-bar__brand">
         <a class="md-brand" href="/">
           <div class="md-brand__logo md-brand__logo--pad">
-            <!-- Note: use either image or icon, but not both -->
-            <!-- img src="/assets/spark-logo.svg" alt="Momentum UI" -->
             <i class="icon icon-cisco-logo"></i>
           </div>
           <div class="md-brand__title">Webex Teams</div>
         </a>
       </div>
       <div class="md-top-bar__right ">
-        <!-- Note: conditionally show top-bar__user or top-bar__logged-out -->
+        <a role="tab" href="room" aria-current="true">ROOM</a>
+        <a role="tab" href="call"  aria-current="true">WEBEX CALL</a>
         <a role="tab" href="teams" aria-current="true">Refresh</a>
          <div class="md-top-bar__user">
           <button md-button color="red" id="LogoutBtn" type='button' (click)="onLogout()" class ="btn btn-primary">Logout</button>
@@ -20,7 +44,6 @@
       </div>
     </div>
   </header>
-  
   
   <div class="md-tab md-tab--pills md-tab--justified" type="pills">
     <ul class="md-tab__list" role="tab">
@@ -50,16 +73,12 @@
       <thead>
           <tr>
             <th style="width: 8rem">Team Name</th>
-              <th style="width: 10rem">Team type</th>
-              <!-- <th style="width: 6rem">Last Updated</th> -->
               <th style="width: 6rem">ID</th>
           </tr>
       </thead>
       <tbody>
         <tr *ngFor="let obj of teams">
           <td>{{ obj.name }}</td>
-          <td>{{ obj.type }}</td>
-          <!-- <td>{{ obj.lastActivity }}</td> -->
           <td>{{ obj.id }}</td>
         </tr>
       </tbody>
@@ -72,7 +91,6 @@
     <br>
     <input mdinput="" class="md-width" placeholder="Enter the userid to be added to the team" class="md-input" [(ngModel)]="addUserId">
     <button md-button color="green" (click)="onUpdateTeamMemeber()">Add Team Member</button>
-    <button md-button color="red" (click)="onRemoveTeamMemeber()">Remove Team Member</button>
   </div>
   
   <div *ngIf="!hideSuccessMessage" class="md-alert md-alert--success">

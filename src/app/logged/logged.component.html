@@ -1,8 +1,56 @@
 
-  
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CALL ANYONE ON WEBEX</title>
+    <link rel="stylesheet" href="https://downloads.momentum-ui.com/@momentum-ui/core/css/momentum-ui.css">
+    <style>
+      main {
+        padding: 10px;
+      }
+      table {
+        border-collapse: collapse;
+        padding: 10px;
+        margin: 10px;
+      }
+      table, th, td {
+        border: 1px solid black;
+      }
+      thead th {
+        font-weight: bold;
+      }
+      tbody td {
+        min-width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+
+      <header class="md-top-bar md-top-bar--blue" role="navigation">
+        <div class="md-top-bar__container">
+          <div class="md-top-bar__brand">
+            <a class="md-brand" href="/">
+              <div class="md-brand__logo md-brand__logo--pad">
+                <i class="icon icon-cisco-logo"></i>
+              </div>
+              <div class="md-brand__title">Webex Features</div>
+            </a>
+          </div>
+          <div class="md-top-bar__right ">
+            <a role="tab" href="room" aria-current="true">ROOM</a>
+            <a role="tab" href="teams"  aria-current="true">TEAMS</a>
+            <a role="tab" href="call" aria-current="true">CALL</a>
+             
+              <button md-button color="red" id="LogoutBtn" type='button' (click)="onLogoutcall()" class ="btn btn-primary">Logout</button>
+             
+             
+          </div>
+        </div>
+      </header>
 <div class="alignRow">
 <div class="imageColumn">
-<img src="assets/images/Room.PNG" alt="ROOM" style="width:100%" (click)="room()">
+<img src="assets/images/room.PNG" alt="ROOM" style="width:100%" (click)="room()">
 </div>
 <div class="imageColumn">
 <img src="assets/images/call.PNG" alt="CALL" style="width:100%" (click)="call()">
@@ -11,4 +59,3 @@
 <img src="assets/images/team.PNG" alt="TEAM" style="width:100%" (click)="team()">
 </div>
 </div>
-

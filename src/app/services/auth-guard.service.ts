@@ -12,7 +12,6 @@ export class AuthGuardService implements CanActivate{
   constructor( private WebexComponent: WebexComponent, private router: Router ) { }
   canActivate(route: ActivatedRouteSnapshot, router: RouterStateSnapshot): boolean | Promise<boolean | UrlTree> | Observable<boolean | UrlTree> | UrlTree{
 
-    // return !!this.WebexComponent.token
     
     if (this.WebexComponent.isLoggedIn ){
       return true;

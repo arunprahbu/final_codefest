@@ -24,23 +24,8 @@
     </style>
   </head>
   <body>
-    <header class="md-top-bar md-top-bar--blue" role="navigation">
-      <div class="md-top-bar__container row">
-        <div class="md-top-bar__brand">
-          <a class="md-brand" href="call">
-            <div class="md-brand__logo">
-              <i class="icon icon-cisco-logo"></i>
-            </div>
-            <div class="md-brand__title">Webex Calling</div>
-          </a>
-        </div>
-        <nav class="md-top-bar__nav ">
-            <div class="md-list md-list--horizontal" role="list">
-            </div>
-          </nav>
-      </div>
-    </header>
     <main>
+
       <header class="md-top-bar md-top-bar--blue" role="navigation">
         <div class="md-top-bar__container">
           <div class="md-top-bar__brand">
@@ -52,10 +37,12 @@
             </a>
           </div>
           <div class="md-top-bar__right ">
-            <a role="tab" href="room" aria-current="true">Refresh</a>
-             <div class="md-top-bar__user">
-              <button md-button color="red" id="LogoutBtn" type='button' (click)="onLogout()" class ="btn btn-primary">Logout</button>
-             </div>
+            <a role="tab" href="room" aria-current="true">ROOM</a>
+            <a role="tab" href="teams"  aria-current="true">TEAMS</a>
+            <a role="tab" href="call" aria-current="true">Refresh</a>
+             
+              <button md-button color="red" id="LogoutBtn" type='button' (click)="onLogoutcall()" class ="btn btn-primary">Logout</button>
+             
              
           </div>
         </div>
@@ -101,13 +88,13 @@
             </div>
           </div>
         </div>
-        
-        
       </div>
-      <h1 style="color:brown;">Make call to anyone on WEBEX</h1>
+
+      <h1 style="color:brown;">Make/Receive call to/from anyone on WEBEX</h1>
       <form ngNoForm id="credentials">
         <fieldset>
           <legend>TOKEN</legend>
+          <a role="tab" style="color:green" href="https://developer.webex.com/docs/api/getting-started#accounts-and-authentication" target="_blank" aria-current="true">Get token?</a>
           <input mdinput="" 
           class="md-width" 
           placeholder="Enter the Token" 

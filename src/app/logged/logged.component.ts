@@ -57,6 +57,7 @@ export class LoggedComponent implements OnInit {
   team(){
     this.router.navigate(['/teams'])
   }
-  
-  
+  onLogoutcall() {
+    this.webexComponent.onLogout(event)
+  }
 }

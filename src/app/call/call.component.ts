@@ -12,7 +12,6 @@ declare const joinMeeting: any;
   
 })
 export class CallComponent implements OnInit {
-  // @ViewChild("video") video: ElementRef;
   @ViewChild('video', { static: true }) private video: any;
   @ViewChild('audio', { static: true }) private audio: any;
   @ViewChild('remotevideo', { static: true }) private remotevideo: any;
@@ -38,7 +37,7 @@ export class CallComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  
+  this.webexComponent.onInit()
   }
   Init(){
 
@@ -52,7 +51,6 @@ export class CallComponent implements OnInit {
             enabled: true
           }
         }
-        // Any other sdk config we need
       },
       credentials: {
         access_token: localStorage.getItem('register_token')
@@ -67,7 +65,6 @@ export class CallComponent implements OnInit {
       this.Init()
       await this.webex.meetings.register();
       this.registered = true;
-      // return this.registered
     } catch (error) {
       window.alert(error);
     }
@@ -98,8 +95,7 @@ export class CallComponent implements OnInit {
     return true
   }
   token(){
-    // alert(this.Token)
-    // this.register = this.webexComponent.onRegister()
+
     alert(this.register)
     
   }
@@ -116,52 +112,26 @@ export class CallComponent implements OnInit {
       console.error(error);
     });
   }
-  dial(){
-    // this.webexComponent.onDial()
-
-  }
+ 
   onhangup(){
     if(this.meet != "undefined"){
     this.meet.leave()}
     else{this.added_incoming.leave()}
-    
-    // try{
-    //   if(this.incoming_meeting != "undefined")
-    //   this.incoming_meeting.leave()
-    //   this.added_incoming.leave()
-    // }catch (error) {
-      
-    // }
+
 }
 
   async bindMeetingEvents(meeting) {
-    // alert(meeting)
     meeting.on('error', (err) => {
       console.error(err);
     });
   
-    // Handle media streams changes to ready state
     meeting.on('media:ready', (media) => {
-      // let _video=this.video.nativeElement;
-      
-      // // const _video = this.video.nativeElement
-      // // alert(_video)
-      //     //  alert(media)
-      //      this.media=media
       if (!media) {
         return;
       }
-      // const _video = this.video.nativeElement
-      // alert(_video)
       if (media.type === 'local') {
-        // alert("in local")
         const _video = this.video.nativeElement;
         _video.srcObject = media.stream;
-          // _video.play();
-
-        //                     _video.play();
-        // alert("media is local")
-        // _video.srcObject = media.stream;
       }
       if (media.type === 'remoteVideo') {
         const _rvideo = this.remotevideo.nativeElement;
@@ -173,9 +143,7 @@ export class CallComponent implements OnInit {
       }
     });
   
-    // Handle media streams stopping
     meeting.on('media:stopped', (media) => {
-      // Remove media streams
       if (media.type === 'local') {
         const _video = this.video.nativeElement;
         _video.srcObject = null;
@@ -189,11 +157,6 @@ export class CallComponent implements OnInit {
         _audio.srcObject = null;
       }
     });
-  
-    // Of course, we'd also like to be able to leave the meeting:
-    // document.getElementById('hangup').addEventListener('click', () => {
-    //   meeting.leave();
-    // });
   }
   
 //   // Join the meeting and add media
@@ -222,24 +185,6 @@ export class CallComponent implements OnInit {
     });
   }
   
-//   document.getElementById('destination').addEventListener('submit', (event) => {
-//     // again, we don't want to reload when we try to join
-//     event.preventDefault();
-  
-//     const destination = document.getElementById('invitee').value;
-  
-//     return webex.meetings.create(destination).then((meeting) => {
-//       // Call our helper function for binding events to meetings
-//       bindMeetingEvents(meeting);
-  
-//       return joinMeeting(meeting);
-//     })
-//     .catch((error) => {
-//       // Report the error
-//       console.error(error);
-//     });
-//   });
-//     }
 audiocheckbox(e){
   if(e.target.checked){
     this.sendAudio=true
@@ -256,7 +201,7 @@ async incoming_cancel(){
   this.incoming_call=false
   this.added_incoming.decline()
 }
-onLogout() {
+onLogoutcall() {
   this.webexComponent.onLogout(event)
 }
   

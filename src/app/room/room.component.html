@@ -1,26 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ROOM</title>
+    <link rel="stylesheet" href="https://downloads.momentum-ui.com/@momentum-ui/core/css/momentum-ui.css">
+    <style>
+      main {
+        padding: 10px;
+      }
+      table {
+        border-collapse: collapse;
+        padding: 10px;
+        margin: 10px;
+      }
+      table, th, td {
+        border: 1px solid black;
+      }
+      thead th {
+        font-weight: bold;
+      }
+      tbody td {
+        min-width: 150px;
+      }
+    </style>
+  </head>
+
 <header class="md-top-bar md-top-bar--blue" role="navigation">
   <div class="md-top-bar__container">
     <div class="md-top-bar__brand">
       <a class="md-brand" href="/">
         <div class="md-brand__logo md-brand__logo--pad">
-          <!-- Note: use either image or icon, but not both -->
-          <!-- img src="/assets/spark-logo.svg" alt="Momentum UI" -->
+          
           <i class="icon icon-cisco-logo"></i>
         </div>
         <div class="md-brand__title">Webex Room</div>
       </a>
     </div>
+    
     <div class="md-top-bar__right ">
-      <!-- Note: conditionally show top-bar__user or top-bar__logged-out -->
+      <a role="tab" href="teams" aria-current="true">TEAMS</a>
+      <a role="tab" href="call"  aria-current="true">WEBEX CALL</a>
       <a role="tab" href="room" aria-current="true">Refresh</a>
        <div class="md-top-bar__user">
         <button md-button color="red" id="LogoutBtn" type='button' (click)="onLogout()" class ="btn btn-primary">Logout</button>
        </div>
-       
     </div>
   </div>
 </header>
-
 
 <div class="md-tab md-tab--pills md-tab--justified" type="pills">
   <ul class="md-tab__list" role="tab">
@@ -33,21 +58,28 @@
     <li class="md-tab__item">
       <button md-button color="blue"  type='button'  (click)="ondisplay_remove()"class ="btn btn-primary">Remove Room</button>
     </li>
+    <br>
   </ul>
 </div>
 
 <div *ngIf="display_create_room">
   <input mdinput="" class="md-width" placeholder="Enter the Room name" class="md-input" [(ngModel)]="roomName">
   <br>
+  <br>
   <button md-button color="blue" (click)="onCreateRoom()">Create Room</button>
+  <br>
   <br>
   <input mdinput="" class="md-width" placeholder="Enter room to message" class="md-input" [(ngModel)]="messageRoom">
   <input mdinput="" class="md-width" placeholder="Enter Message" class="md-input" [(ngModel)]="messages">
   <button md-button color="green" (click)="onSendMsg()">Send Message</button>
+  <br>
+  <div>
+    <br>
+    <p style="color:brown;">click on below button to receive messages as alert/in-console after the alert</p>
   <button md-button color="green" (click)="onReceiveMsg()">Receive Message</button>
-  {{ receivedmsg }}
+    {{ receivedmsg }}
+  </div>
 </div>
-
 <div *ngIf="display_list">
 <button type="button" md-button color="green" (click)="listRooms()" >List Rooms</button>
 <button type="button" md-button color="purple" (click)="clearlist()">clear List</button>
@@ -87,6 +119,7 @@
       successfully. Have a look at it in Teams
     </strong>
   </div>
+
   <div class="md-alert__button">
     <button type="button" class="md-button md-button--circle md-button--large">
       <span class="md-button__children icon icon-cancel_14"></span>
@@ -94,3 +127,57 @@
   </div>
 </div>
 
+<div *ngIf ="incoming_message"class="md-alert md-alert--call">
+  <div class="md-modal__backdrop fade in">
+    <div
+      role="dialog"
+      id="react-aria-modal-dialog"
+      class="md-modal md-modal--dialog in"
+      aria-labelledby="modalDialog"
+      tabindex="-1"
+    >
+      <div class="md-modal__content">
+        <div class="md-modal__flex-container">
+          <div class="md-modal__header">
+            <span class="md-modal__title">Incoming Message</span>
+            <button class="md-close md-modal__close"></button>
+          </div>
+          <div class="md-modal__body"><span>test</span></div>
+          <div class="md-modal__footer">
+           <button class="md-button md-button--circle md-button--44 md-button--red" 
+            alt="reject call" type="button" 
+            (click)="incoming_cancel()" aria-label="reject call" tabindex="0">
+              <span class="md-button__children">
+                <i class="icon icon-cancel_24"></i>
+              </span>
+            </button>
+            <button
+              class="md-button md-button--circle md-button--44 md-button--green"
+              alt="answer call with voice and video"
+              type="button"
+              (click)="incoming_attend()"
+              aria-label="answer call with voice and video" t
+              abindex="0">
+              <span class="md-button__children">
+                <i class="icon icon-camera_24"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>
+<div *ngIf="!hideRemoveMessage" class="md-alert md-alert--success">
+  <div class="md-alert__icon"></div>
+  <div class="md-alert__content">
+    <strong [ngClass] ="FadeOutSuccessMsg()" >Your command processed
+    </strong>
+  </div>
+  <div class="md-alert__button">
+    <button type="button" class="md-button md-button--circle md-button--large">
+      <span class="md-button__children icon icon-cancel_14"></span>
+    </button>
+  </div>
+</div>
