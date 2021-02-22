@@ -8,7 +8,7 @@ import {map} from 'rxjs/operators'
   providedIn: 'root'
 })
 export class AuthGuardService implements CanActivate{
-
+  message : string
   constructor( private WebexComponent: WebexComponent, private router: Router ) { }
   canActivate(route: ActivatedRouteSnapshot, router: RouterStateSnapshot): boolean | Promise<boolean | UrlTree> | Observable<boolean | UrlTree> | UrlTree{
 
@@ -17,5 +17,12 @@ export class AuthGuardService implements CanActivate{
       return true;
     }
     return this.router.createUrlTree(['']); 
+  }
+  setMsg(data){
+    this.message=data
+
+  }
+  getMssg(){
+    this.message
   }
 }

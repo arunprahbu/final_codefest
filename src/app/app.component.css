@@ -1,0 +1,19 @@
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+.icon-sidebar {
+    min-height: 100vh;
+    min-width: 3.5%;
+    color: black;
+}
+
+.sidebar {
+    min-height: 100vh;
+    min-width: 22%;
+}
+
+.context {
+    min-width: 75%;
+}

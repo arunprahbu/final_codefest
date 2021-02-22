@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>ROOM</title>
-    <link rel="stylesheet" href="https://downloads.momentum-ui.com/@momentum-ui/core/css/momentum-ui.css">
+    <!-- <link rel="stylesheet" href="https://downloads.momentum-ui.com/@momentum-ui/core/css/momentum-ui.css"> -->
     <style>
       main {
         padding: 10px;
@@ -52,9 +52,9 @@
     <li class="md-tab__item active">
       <button md-button color="blue"  type='button' (click)="ondisplay_create_room()" class ="btn btn-primary">create room</button>
     </li>
-    <li class="md-tab__item">
+    <!-- <li class="md-tab__item">
       <button md-button color="blue"  type='button' (click)="ondisplay_list()" class ="btn btn-primary">List room</button>
-    </li>
+    </li> -->
     <li class="md-tab__item">
       <button md-button color="blue"  type='button'  (click)="ondisplay_remove()"class ="btn btn-primary">Remove Room</button>
     </li>
@@ -69,7 +69,7 @@
   <button md-button color="blue" (click)="onCreateRoom()">Create Room</button>
   <br>
   <br>
-  <input mdinput="" class="md-width" placeholder="Enter room to message" class="md-input" [(ngModel)]="messageRoom">
+  <!-- <input mdinput="" class="md-width" placeholder="Enter room to message" class="md-input" [(ngModel)]="messageRoom">
   <input mdinput="" class="md-width" placeholder="Enter Message" class="md-input" [(ngModel)]="messages">
   <button md-button color="green" (click)="onSendMsg()">Send Message</button>
   <br>
@@ -78,23 +78,23 @@
     <p style="color:brown;">click on below button to receive messages as alert/in-console after the alert</p>
   <button md-button color="green" (click)="onReceiveMsg()">Receive Message</button>
     {{ receivedmsg }}
-  </div>
+  </div> -->
 </div>
-<div *ngIf="display_list">
+<!-- <div *ngIf="display_list">
 <button type="button" md-button color="green" (click)="listRooms()" >List Rooms</button>
 <button type="button" md-button color="purple" (click)="clearlist()">clear List</button>
 <div *ngIf = "isShowRoom" class="container">
-  <table class="table table-striped">
+  <table class="table table-bordered">
     <thead>
         <tr>
-          <th style="width: 8rem">Room Name</th>
-            <th style="width: 10rem">Room type</th>
-            <th style="width: 6rem">Last Updated</th>
-            <th style="width: 6rem">ID</th>
+          <th >Room Name</th>
+            <th >Room type</th>
+            <th  >Last Updated&nbsp;<button md-button color="red" (click)="sort('lastActivity')">sort</button></th>
+            <th >ID</th>
         </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let obj of rooms">
+      <tr *ngFor="let obj of rooms  ">
         <td>{{ obj.title }}</td>
         <td>{{ obj.type }}</td>
         <td>{{ obj.lastActivity }}</td>
@@ -103,7 +103,7 @@
     </tbody>
   </table>
 </div>
-</div>
+</div> -->
 
 <div *ngIf="display_remove">
   <input mdinput="" class="md-width" placeholder="Enter the Room name to be removed" class="md-input" [(ngModel)]="removeroomName">

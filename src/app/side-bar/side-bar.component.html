@@ -1,0 +1,69 @@
+<head>
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/simplebar@latest/dist/simplebar.css"
+/>
+</head>
+<md-sidebar [withIcons]="true" theme="dark" >
+  <md-sidebar-body>
+    <md-sidebar-nav>
+      <div class="md-input-container md-search-input md-margin__top md-padding__left" style="display: flex;">
+        <div class="md-input__wrapper medium-10 column">
+          <span class="md-input__before">
+            <i class="md-icon icon icon-search_20 md-search-input__icon" style="font-size: 20px;"></i>
+          </span>
+          <input tabindex="0" type="text" value=""
+            class="md-input md-input--pill md-input--before md-active ng-valid ng-touched ng-dirty" [(ngModel)]="searchText">
+        </div>
+        <div class="connect-people">
+          <button id="createRoom" alt="Connect people" type="button" aria-label="Connect people" tabindex="0"
+            aria-haspopup="true" title="Create a Room"
+            class="md-button md-button--circle md-button--32 md-button--white global-activity-menu-button md-margin__left--s">
+            <span class="md-button__children" style="opacity: 1;">
+              <i class="md-icon icon icon-plus_12" style="font-size: 12px;"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </md-sidebar-nav>
+    <md-sidebar-nav>
+ 
+      <div *ngFor="let room of rooms | filter:searchText">
+        <div role="list" routerlinkactive="active"
+          class="md-list md-list--vertical md-sidebar-nav__group md-sidebar-nav__group--primary space-list active"
+          tabindex="0">
+          <div id="md-list-item-11" role="listitem" tabindex="-1" aria-describedby="pressEnterToChat"
+            aria-roledescription="list item" aria-current="false"
+            class="md-list-item md-list-item--space space-list-item">
+            <div class="md-list-item__left"  >
+              <span>
+                <div class="md-avatar md-avatar--group md-avatar--40 md-avatar--dark space-list-avatar"
+                  title="room.title">
+                  <span (click)="alert(room.id)" class="md-avatar__letter">{{room.avatar}}</span>
+                </div>
+              </span>
+            </div>
+            <div class="md-list-item__center room-item">
+              <div class="md-list-item__header room-header">{{room.title}}</div>
+              <div class="md-list-item__subheader"></div>
+            </div>
+            <div class="md-list-item__middle"></div>
+            <div class="md-list-item__right">
+              <span>
+                <button
+            class="md-button md-button--circle md-button--32 md-activity md-activity__camera"
+            alt="camera" type="button" aria-label="camera" (click)="emails(room)">
+            <span class="md-button__children">
+              <i class="icon icon-camera_18"></i>
+            </span>
+          </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </md-sidebar-nav>
+    <!-- <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script> -->
+  </md-sidebar-body>
+</md-sidebar>
+

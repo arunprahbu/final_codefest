@@ -24,6 +24,10 @@ export class WebexComponent implements OnInit {
   public loggedin: boolean;
   messages: any;
   incoming_message: boolean;
+  details: Promise<{}>;
+  imageUrl: Promise<string>;
+  displayName: Promise<string>;
+  email: Promise<string>;
 
   constructor() {
     this.syncStatus = 'NONE';
@@ -33,7 +37,8 @@ export class WebexComponent implements OnInit {
   }
   
   ngOnInit() {
-    this.redirect_uri='https://arunprahbu333.web.app/logged'
+    this.redirect_uri='http://localhost:4200/logged'
+    this.onInit();
   }
 
   Login() {
@@ -79,7 +84,7 @@ export class WebexComponent implements OnInit {
   }
 
   async onListRoom() {
-    return this.webex.rooms.list({max:30})
+    return this.webex.rooms.list({})
   }
 
   onInit() {
@@ -103,6 +108,7 @@ export class WebexComponent implements OnInit {
       console.log("READY", this.webex.credentials.supertoken)
       if (this.webex.credentials.supertoken){
         localStorage.setItem('webex_token', this.webex.credentials.supertoken.access_token)
+        // alert(this.webex.credentials.supertoken.access_token)
         
       }
     });
@@ -141,8 +147,8 @@ export class WebexComponent implements OnInit {
   async onRegister() {
     try {
       await this.webex.meetings.register();
-      this.registered = true;
-      return this.registered
+      alert("on register in webex comp")
+      // return this.registered
     } catch (error) {
       window.alert(error);
     }
@@ -243,4 +249,75 @@ export class WebexComponent implements OnInit {
         this.incoming_message = true;
      }, 4000);
  }
+ async getPersonalDetails() {
+  try {
+    return await this.webex.people.get('me');
+  } catch (error) {
+    console.error(error);
+    return null;      
+  }
 }
+async getRoomsWithDetails() {
+  let details = {
+    items: []
+  }
+
+  const items = [];
+  const rooms = await this.onListRoom();
+  for(const room of rooms){
+    console.log(room)
+    let item = {
+      id: room.id,
+      title: room.title,
+      avatar: room.title[0],
+    }
+    items.push(item);
+    
+  }
+  console.log(items);
+  details.items = items;
+  return items;
+}
+// async getcemail(){
+//   this.getPersonalDetails().then(
+//     (details) => {
+//       this.details = new Promise<{}>((resolve, reject) => {
+//         resolve(details);
+//       });
+//       this.email = new Promise<string>((resolve, reject) => {
+        
+//         resolve(details.personEmail);
+        
+//       });
+//     }
+//   );
+//   // alert(this.email)
+// }
+
+async getemailDetails(id){
+  // this.webex.rooms.create({title: 'List Membership Example'})
+  // .then(function(r) {
+  //   this.room = r;
+  //   alert(r)
+  //   return this.webex.memberships.create({
+
+  //   personEmail: 'aarunprabhu7@gmail.com',
+  //   roomId:"Y2lzY29zcGFyazovL3VzL1JPT00vODY1NWViZGItNzQ0My0zYTAzLTgwZmItODU0ZDE2YTE2ZTlj"
+  //  });}).then(function() {
+  // this.getcemail()
+    // alert(this.email)
+    return this.webex.memberships.list({roomId:id})
+
+  .then(function(memberships) {
+    const memberEmail = []
+    // var assert = require('assert');
+    // assert.equal(memberships.length, 2);
+    for (var i = 0; i < memberships.length; i+= 1) {
+      // assert.equal(memberships.items[i].roomId, "Y2lzY29zcGFyazovL3VzL1JPT00vODY1NWViZGItNzQ0My0zYTAzLTgwZmItODU0ZDE2YTE2ZTlj");
+    //  if(memberships.items[i].roomId === id){
+      memberEmail.push(memberships.items[i].personEmail)
+      // alert(memberships.items[i].personEmail + memberships.items[i].roomId )
+    }
+    return memberEmail;
+  });
+}}

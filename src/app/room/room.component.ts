@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SelectRowDirective } from '@momentum-ui/angular/data-table/data-table-select-row.directive';
 import { WebexComponent } from '../webex/webex.component'
 declare const loop: any;
+import { CallComponent } from '../call/call.component'
+import { OrderModule } from 'ngx-order-pipe';
+
 
 @Component({
   selector: 'app-room',
@@ -97,7 +100,8 @@ export class RoomComponent implements OnInit {
 onSendMsg(){
 
   this.webexComponent.onListRoom().then((rooms) => {
-    this.rooms = rooms;
+    let newarr = rooms.sort((a, b) => b.lastActivity - a.lastActivity);
+    this.rooms=newarr
     for (var i = 0; i < rooms.items.length; i+= 1) {
       var found = false;
       if (rooms.items[i].title === this.messageRoom){
@@ -111,6 +115,7 @@ onSendMsg(){
     }
 
   })
+  
 }
 async onReceiveMsg(){
 
@@ -118,6 +123,14 @@ async onReceiveMsg(){
 }
 async message(){
   this.receivedmsg=this.webexComponent.ret()
+
+}
+key:string="lastActivity";
+reverse:boolean=false;
+sort(key){
+  this.key=key
+  this.reverse=!this.reverse 
+
 
 }
 }

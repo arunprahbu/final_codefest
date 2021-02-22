@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<div class="wrapper">
+  <nav class="icon-sidebar" *ngIf = "router.url !== '/'">
+    <app-account-side-bar></app-account-side-bar>
+  </nav>
+    <nav class="sidebar" *ngIf = "router.url !== '/'">
+      <app-side-bar></app-side-bar>
+    </nav>
+    <div class="context" id="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
